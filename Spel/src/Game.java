@@ -2,11 +2,14 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
 
 ;public class Game extends JPanel{
 	
 	Ball ball = new Ball(this);
 	Racket racket = new Racket(this);
+	Font scoreFont = new Font("SanSerif", Font.PLAIN, 30);
+	private int timeLeft;
 	
 	public Game(){
 		addKeyListener(new KeyListener() {
@@ -38,11 +41,23 @@ import java.awt.event.*;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		ball.paint(g2d);
 		racket.paint(g2d);
+		g2d.setFont(scoreFont);
+		g2d.drawString("Score: " + ball.getScore(), 15, 30);
+		g2d.drawString("Spelet startar om: " + timeLeft, 400, 30);
 	}
 	
-	public void gameOver(){
+	public  void gameOver(){
 		JOptionPane.showMessageDialog(this, "Game over", "Game over", JOptionPane.YES_NO_OPTION);
 		System.exit(ABORT);
+	}
+	
+	public void countDown(){
+		try{
+			for(timeLeft = 3; timeLeft > 0; timeLeft--){
+				repaint();
+				TimeUnit.SECONDS.sleep(1);
+			}
+		}catch(InterruptedException e){}
 	}
 	
 	public static void main(String[] args) {
@@ -57,6 +72,7 @@ import java.awt.event.*;
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
+		game.countDown();
 		while(true){
 			game.move();
 			game.repaint();

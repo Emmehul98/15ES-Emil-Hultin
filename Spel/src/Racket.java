@@ -40,6 +40,14 @@ public class Racket {
 		return new Rectangle(x, Y, WIDTH, HEIGHT);
 	}
 
-	public int getY();
+	public int get(){
+		return Y;
+	}
+
+	public int getY() {
+		return 0;
+	}
+	
+	
 	
 }
